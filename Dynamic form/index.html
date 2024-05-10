@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .form-container {
+        width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(149, 198, 229);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-field {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        background-color: rgb(201, 230, 68);
+        border: none;
+      }
+
+      .form-field input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        outline: none;
+        margin-right: 10px;
+      }
+
+      .form-field button {
+        padding: 8px 12px;
+        background-color: #e56cc9;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        outline: none;
+      }
+
+      .form-field button:hover {
+        background-color: #5757ea;
+      }
+
+      .remove-button {
+        background-color: #dc3545;
+        margin-left: 5px;
+      }
+
+      .remove-button:hover {
+        background-color: #bd2130;
+      }
+
+      .submit-button {
+        background-color: #58ef7b;
+        margin-top: 10px;
+        border: none;
+      }
+
+      .submit-button:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="form-container"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function DynamicForm() {
+      const [hobbies, setHobbies] = React.useState([""]);
+
+      function handleAddField() {
+        setHobbies([...hobbies, ""]);
+      }
+
+      function handleRemoveField(index) {
+        if (hobbies.length === 1) return;
+        const updatedHobbies = [...hobbies];
+        updatedHobbies.splice(index, 1);
+        setHobbies(updatedHobbies);
+      }
+
+      function handleChange(index, value) {
+        const updatedHobbies = [...hobbies];
+        updatedHobbies[index] = value;
+        setHobbies(updatedHobbies);
+      }
+
+      function handleSubmit() {
+        console.log(hobbies);
+      }
+
+      return (
+        <div>
+          {hobbies.map((hobby, index) => (
+            <div key={index} class="form-field">
+              <input
+                type="text"
+                value={hobby}
+                onChange={(e) => handleChange(index, e.target.value)}
+              />
+              {index !== 0 && (
+                <button
+                  class="remove-button"
+                  onClick={() => handleRemoveField(index)}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+          <button class="form-field" onClick={handleAddField}>
+            Add Hobby
+          </button>
+          <button class="submit-button" onClick={handleSubmit}>
+            Submit
+          </button>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<DynamicForm />);
+  </script>
+</html>
